@@ -1,0 +1,7 @@
+@baseUrl = http://localhost:8080
+
+### Health check
+GET {{baseUrl}}/healthz
+
+### Get cached arrivals
+GET {{baseUrl}}/api/v1/arrivals
