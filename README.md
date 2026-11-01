@@ -18,6 +18,41 @@ and serves the next arrivals for your stops as JSON. Small enough to run on a Ra
    | `ARRIVAL_IDS`  | Comma-separated stop IDs, e.g. `HSL:1040601,HSL:1040602` |
    | `DEBUG`        | `true` to log the full payload on every fetch        |
 
+### Finding a stop ID
+
+Open the [HSL GraphiQL explorer](https://api.digitransit.fi/graphiql/hsl), paste this query
+and run it (Cmd/Ctrl+Enter):
+
+```graphql
+{
+  stops(name: "Kamppi") {
+    gtfsId
+    name
+    code
+  }
+}
+```
+
+A station usually has several stops, one per platform or direction. To see which direction
+each one goes, query their next departures (the `headsign` is the direction):
+
+```graphql
+{
+  stops(ids: ["HSL:1040601", "HSL:1040602"]) {
+    gtfsId
+    name
+    stoptimesWithoutPatterns(numberOfDepartures: 3) {
+      serviceDay
+      realtimeArrival
+      realtime
+      headsign
+    }
+  }
+}
+```
+
+Put the `gtfsId` values of the stops you want in `ARRIVAL_IDS`.
+
 ## Run
 
 ```sh
